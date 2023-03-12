@@ -4,4 +4,6 @@
     <string name="menu">Menu</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="clear_leaderboard">Clear leaderboard</string>
+    <string name="play">Play</string>
+    <string name="rules">Hit as many moles as you can in 30 seconds</string>
 </resources>

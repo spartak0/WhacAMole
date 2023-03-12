@@ -18,8 +18,8 @@ class GameScreenViewModel @Inject constructor() : ViewModel() {
     private val startGameJob: Job by lazy { startGame() }
     private val startTimeJob: Job by lazy { startTimer() }
 
-    private val delaySpawnNewMol = 3000L
-    private val delayVisibleMol = 750L
+    private val delaySpawnNewMol = 2500L
+    private val delayVisibleMol = 550L
 
     private val _molVisibility = MutableStateFlow(-1)
     val molVisibility = _molVisibility.asStateFlow()

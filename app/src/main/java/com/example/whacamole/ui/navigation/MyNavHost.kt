@@ -32,16 +32,21 @@ fun MyNavHost(
         composable(Screen.StartScreen.route) {
             StartScreen(navigateToGame = {
                 navController.navigate(Screen.GameScreen.route)
-            })
+            },
+                navigateToLeaderboard = {
+                    navController.navigate(Screen.LeaderboardScreen.route)
+                })
         }
         composable(
             Screen.GameScreen.route
         ) {
             GameScreen(
                 navigateUp = { navController.navigateUp() },
-                navigateToScore = { navController.navigate("${Screen.ScoreScreen.route}/$it"){
-                    popUpTo(Screen.StartScreen.route)
-                } })
+                navigateToScore = {
+                    navController.navigate("${Screen.ScoreScreen.route}/$it") {
+                        popUpTo(Screen.StartScreen.route)
+                    }
+                })
         }
         composable("${Screen.ScoreScreen.route}/{${Constants.SCORE_ARGUMENT}}",
             arguments = listOf(
@@ -63,14 +68,14 @@ fun MyNavHost(
                         popUpTo(0)
                     }
                 },
-            navigateToLeaderboard = {
-                navController.navigate(Screen.LeaderboardScreen.route)
-            })
+                navigateToLeaderboard = {
+                    navController.navigate(Screen.LeaderboardScreen.route)
+                })
         }
         composable(
             Screen.LeaderboardScreen.route
         ) {
-            LeaderboardScreen(navigateUp = {navController.navigateUp()})
+            LeaderboardScreen(navigateUp = { navController.navigateUp() })
         }
     }
 }
