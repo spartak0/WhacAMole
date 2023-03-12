@@ -26,14 +26,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.whacamole.R
-import kotlinx.coroutines.CoroutineScope
+import com.example.whacamole.ui.view.CircleBtn
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(
-    viewModel: GamesScreenViewModel = hiltViewModel(),
+    viewModel: GameScreenViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
     navigateToScore: (Int) -> Unit,
 ) {
@@ -42,8 +42,7 @@ fun GameScreen(
     val time = viewModel.time.collectAsState()
 
     if (time.value == 30) {
-        LaunchedEffect(true ){
-            Log.d("AAA", "GameScreen: time.value == 30")
+        LaunchedEffect(true) {
             viewModel.clear()
             navigateToScore(score.value)
         }
@@ -51,7 +50,7 @@ fun GameScreen(
     }
 
     Scaffold(topBar = {
-        TopBar(
+        GameTopBar(
             modifier = Modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth(),
@@ -118,25 +117,14 @@ fun GameScreen(
 }
 
 @Composable
-fun TopBar(modifier: Modifier, score: Int, time: Int, navigateUp: () -> Unit) {
+fun GameTopBar(modifier: Modifier, score: Int, time: Int, navigateUp: () -> Unit) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(50.dp)
-                .background(MaterialTheme.colorScheme.primary)
-        ) {
-            IconButton(onClick = { navigateUp() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    contentDescription = null
-                )
-            }
+        CircleBtn(modifier = Modifier.size(50.dp), iconId = R.drawable.baseline_arrow_back_24) {
+            navigateUp()
         }
         Text(
             text = "Score: $score",

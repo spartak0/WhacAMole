@@ -9,8 +9,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LeaderboardDao {
 
-    @Query("SELECT * FROM leaderboard_table")
-    fun getTopFive(): Flow<List<LeaderboardEntity>>
+    @Query("SELECT * FROM leaderboard_table ORDER BY score DESC LIMIT 5")
+    fun getTopFiveLeaderboard(): Flow<List<LeaderboardEntity>>
+
+    @Query("SELECT * FROM leaderboard_table ORDER BY score DESC")
+    fun getAllLeaderboard(): Flow<List<LeaderboardEntity>>
 
     @Insert
     suspend fun addLeader(leader: LeaderboardEntity)

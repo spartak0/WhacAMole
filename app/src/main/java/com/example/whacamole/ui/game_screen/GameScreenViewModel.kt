@@ -3,6 +3,7 @@ package com.example.whacamole.ui.game_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
-class GamesScreenViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class GameScreenViewModel @Inject constructor() : ViewModel() {
     private val startGameJob: Job by lazy { startGame() }
     private val startTimeJob: Job by lazy { startTimer() }
 

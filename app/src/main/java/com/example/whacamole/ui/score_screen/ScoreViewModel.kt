@@ -18,8 +18,19 @@ class ScoreViewModel @Inject constructor(
     private val _leaderboard = MutableStateFlow(listOf<LeaderboardData>())
     val leaderboard = _leaderboard.asStateFlow()
 
+    private val _enabled = MutableStateFlow(true)
+    val enabled = _enabled.asStateFlow()
+
+    init {
+        fetchTopFiveLeaderboard()
+    }
+
+    fun changeEnabled(value: Boolean) = viewModelScope.launch {
+        _enabled.value = value
+    }
+
     fun fetchTopFiveLeaderboard() = viewModelScope.launch(Dispatchers.IO) {
-        databaseRepository.fetchTopFiveLeaderboard().collect {
+        databaseRepository.fetchTopTenLeaderboard().collect {
             _leaderboard.value = it
         }
     }

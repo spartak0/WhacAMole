@@ -12,8 +12,14 @@ class DatabaseRepositoryImpl(
     private val leaderboardMapper: LeaderboardMapper
 ) : DatabaseRepository {
 
-    override suspend fun fetchTopFiveLeaderboard(): Flow<List<LeaderboardData>> {
-        return dao.getTopFive().map { list ->
+    override suspend fun fetchTopTenLeaderboard(): Flow<List<LeaderboardData>> {
+        return dao.getTopFiveLeaderboard().map { list ->
+            list.map { leaderboardMapper.entityToDomain(it) }
+        }
+    }
+
+    override suspend fun fetchAllLeaderboard(): Flow<List<LeaderboardData>> {
+        return dao.getAllLeaderboard().map { list ->
             list.map { leaderboardMapper.entityToDomain(it) }
         }
     }

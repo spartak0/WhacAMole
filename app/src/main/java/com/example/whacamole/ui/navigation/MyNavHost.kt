@@ -1,5 +1,6 @@
 package com.example.whacamole.ui.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -10,11 +11,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.whacamole.ui.game_screen.GameScreen
+import com.example.whacamole.ui.leaderboard_screen.LeaderboardScreen
 import com.example.whacamole.ui.score_screen.ScoreScreen
 import com.example.whacamole.ui.score_screen.ScoreViewModel
 import com.example.whacamole.ui.start_screen.StartScreen
 import com.example.whacamole.utils.Constants
 
+@SuppressLint("ResourceType")
 @Composable
 fun MyNavHost(
     modifier: Modifier = Modifier,
@@ -36,7 +39,9 @@ fun MyNavHost(
         ) {
             GameScreen(
                 navigateUp = { navController.navigateUp() },
-                navigateToScore = { navController.navigate("${Screen.ScoreScreen.route}/$it") })
+                navigateToScore = { navController.navigate("${Screen.ScoreScreen.route}/$it"){
+                    popUpTo(Screen.StartScreen.route)
+                } })
         }
         composable("${Screen.ScoreScreen.route}/{${Constants.SCORE_ARGUMENT}}",
             arguments = listOf(
@@ -44,8 +49,28 @@ fun MyNavHost(
                     type = NavType.IntType
                 }
             )) {
-            val viewModel:ScoreViewModel = hiltViewModel()
-            ScoreScreen(viewModel, score = it.arguments?.getInt(Constants.SCORE_ARGUMENT) ?: 0)
+            val viewModel: ScoreViewModel = hiltViewModel()
+            ScoreScreen(
+                viewModel,
+                score = it.arguments?.getInt(Constants.SCORE_ARGUMENT) ?: 0,
+                navigateToGame = {
+                    navController.navigate(Screen.GameScreen.route) {
+                        popUpTo(Screen.StartScreen.route)
+                    }
+                },
+                navigateToMenu = {
+                    navController.navigate(Screen.StartScreen.route) {
+                        popUpTo(0)
+                    }
+                },
+            navigateToLeaderboard = {
+                navController.navigate(Screen.LeaderboardScreen.route)
+            })
+        }
+        composable(
+            Screen.LeaderboardScreen.route
+        ) {
+            LeaderboardScreen(navigateUp = {navController.navigateUp()})
         }
     }
 }
